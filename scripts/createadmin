@@ -3,7 +3,7 @@
 
 # Define your new admin username and a temporary strong password.
 $newAdminUser = "ccdcadmin"
-$tempPassword = "Your_Complex_Password_Here!" # Change this immediately after first login.
+$tempPassword = "TempPassword" # Change this immediately after first login.
 
 # Create the new user account.
 New-ADUser -Name $newAdminUser -SamAccountName $newAdminUser -AccountPassword (ConvertTo-SecureString $tempPassword -AsPlainText -Force) -Enabled $true -PasswordNeverExpires $true
