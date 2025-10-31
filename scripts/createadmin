@@ -2,7 +2,7 @@
 # Run this ONLY on the AD/DNS Server (Domain Controller)
 
 # Define your new admin username and a temporary strong password.
-$newAdminUser = "ccdcadmin"
+$newAdminUser = "DUCCDCadmin"
 $tempPassword = "TempPassword" # Change this immediately after first login.
 
 # Create the new user account.
