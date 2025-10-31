@@ -1,0 +1,27 @@
+# --- SCRIPT 1: LOCAL PASSWORD RESET ---
+# Run this on Web Server, FTP Server, and Windows 11 Workstation
+
+# This script will prompt you ONCE for a new, strong password.
+$Password = Read-Host -AsSecureString "Enter the NEW complex password for all local accounts"
+
+# List of default user accounts to target.
+$Usernames = @("administrator", "UserOne")
+
+# Loop through each username and change its password.
+foreach ($User in $Usernames) {
+    try {
+        # Find the local user.
+        $LocalUser = Get-LocalUser -Name $User -ErrorAction Stop
+        
+        # Set the new password.
+        $LocalUser | Set-LocalUser -Password $Password
+        
+        Write-Host "Password for local user '$User' has been changed successfully." -ForegroundColor Green
+    }
+    catch {
+        # This will catch errors if a user (like 'UserOne') doesn't exist on a server.
+        Write-Host "Local user '$User' not found on this machine. Skipping." -ForegroundColor Yellow
+    }
+}
+
+Write-Host "--- LOCAL PASSWORD RESET COMPLETE ---" -ForegroundColor Cyan
