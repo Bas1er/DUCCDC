@@ -1,0 +1,12 @@
+# --- SCRIPT 4: ROGUE ACCOUNT HUNTER ---
+# Run this ONLY on the AD/DNS Server (Domain Controller)
+
+Write-Host "--- Auditing Privileged Groups ---" -ForegroundColor Yellow
+Write-Host "Members of 'Domain Admins':"
+Get-ADGroupMember -Identity "Domain Admins" | Select-Object Name, SamAccountName
+
+Write-Host "`nMembers of 'Enterprise Admins':"
+Get-ADGroupMember -Identity "Enterprise Admins" | Select-Object Name, SamAccountName
+
+# To disable a suspicious user, use this command:
+# Disable-ADAccount -Identity "SuspiciousUsername"
