@@ -1,0 +1,20 @@
+# --- SCRIPT 2: DOMAIN ADMIN PASSWORD RESET ---
+# Run this ONLY on the AD/DNS Server (Domain Controller)
+
+# This script will prompt you for the new Domain Admin password.
+$Password = Read-Host -AsSecureString "Enter the NEW complex password for the DOMAIN Administrator"
+
+try {
+    # Get the built-in domain administrator account.
+    $AdminAccount = Get-ADUser -Identity "Administrator"
+    
+    # Reset the password without needing to know the old one.
+    Set-ADAccountPassword -Identity $AdminAccount -NewPassword $Password -Reset
+    
+    Write-Host "Password for DOMAIN user 'Administrator' has been changed successfully." -ForegroundColor Green
+}
+catch {
+    Write-Host "Failed to change domain administrator password. Error: $_" -ForegroundColor Red
+}
+
+Write-Host "--- DOMAIN PASSWORD RESET COMPLETE ---" -ForegroundColor Cyan
