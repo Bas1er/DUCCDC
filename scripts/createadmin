@@ -1,0 +1,14 @@
+# --- SCRIPT 3: CREATE TEAM ADMIN ACCOUNT ---
+# Run this ONLY on the AD/DNS Server (Domain Controller)
+
+# Define your new admin username and a temporary strong password.
+$newAdminUser = "ccdcadmin"
+$tempPassword = "Your_Complex_Password_Here!" # Change this immediately after first login.
+
+# Create the new user account.
+New-ADUser -Name $newAdminUser -SamAccountName $newAdminUser -AccountPassword (ConvertTo-SecureString $tempPassword -AsPlainText -Force) -Enabled $true -PasswordNeverExpires $true
+
+# Add the new user to the Domain Admins group.
+Add-ADGroupMember -Identity "Domain Admins" -Members $newAdminUser
+
+Write-Host "Domain Admin account '$newAdminUser' created and added to Domain Admins group." -ForegroundColor Green
