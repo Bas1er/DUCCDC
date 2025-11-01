@@ -1,0 +1,25 @@
+# --- SCRIPT: IIS Attack Surface Reduction ---
+# This removes common, unnecessary IIS features that Red Team exploits.
+
+Write-Host "Removing high-risk and unnecessary IIS features..." -ForegroundColor Yellow
+
+# List of features to remove. Add/remove as needed based on service requirements.
+# WebDAV is a common attack vector.
+# FTP is on a different server, so it should not be on the web server.
+$featuresToRemove = @(
+    "Web-DAV-Publishing",
+    "Web-FTP-Server",
+    "Web-Http-Tracing" # Disables the TRACE verb
+)
+
+foreach ($feature in $featuresToRemove) {
+    try {
+        Get-WindowsFeature -Name $feature -ErrorAction Stop | Uninstall-WindowsFeature -Remove -ErrorAction Stop
+        Write-Host "  - $feature: REMOVED." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "  - $feature: Not found or already removed." -ForegroundColor Red
+    }
+}
+
+Write-Host "IIS attack surface reduction complete." -ForegroundColor Green
