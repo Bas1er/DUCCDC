@@ -1,0 +1,24 @@
+# --- SCRIPT: SYSTEM BASELINE CAPTURE ---
+# This saves the current state of the system to a text file for later comparison.
+
+$baselineDir = "C:\CCDC_Baselines"
+New-Item -Path $baselineDir -ItemType Directory -Force
+
+Write-Host "Capturing system baseline in $baselineDir..." -ForegroundColor Green
+
+# 1. Listening ports and the executables that own them
+(netstat -anob) | Out-File "$baselineDir\baseline_netstat.txt"
+
+# 2. Running processes and their associated services
+(tasklist /svc) | Out-File "$baselineDir\baseline_tasklist.txt"
+
+# 3. All scheduled tasks (a common persistence mechanism)
+(schtasks /query /fo LIST /v) | Out-File "$baselineDir\baseline_scheduled_tasks.txt"
+
+# 4. All currently running services
+(Get-Service | Where-Object {$_.Status -eq "Running"}) | Out-File "$baselineDir\baseline_running_services.txt"
+
+# 5. All local user accounts
+(Get-LocalUser) | Out-File "$baselineDir\baseline_local_users.txt"
+
+Write-Host "Baseline capture COMPLETE. Files are in C:\CCDC_Baselines" -ForegroundColor Cyan
