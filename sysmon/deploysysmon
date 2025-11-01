@@ -1,0 +1,24 @@
+# --- SCRIPT: DEPLOY SYSMON ---
+# This script downloads Sysmon and the SwiftOnSecurity config, then installs the service.
+
+# ---!! CONFIGURE THESE VARIABLES!! ---
+$SysmonURL = "https://raw.githubusercontent.com/YourUser/YourRepo/main/Sysmon64.exe"
+$ConfigURL = "https://raw.githubusercontent.com/YourUser/YourRepo/main/sysmonconfig-export.xml"
+# ----------------------------------------
+
+$ToolDir = "C:\temp\tools"
+New-Item -Path $ToolDir -ItemType Directory -Force
+
+$SysmonPath = "$ToolDir\Sysmon64.exe"
+$ConfigPath = "$ToolDir\config.xml"
+
+Write-Host "Downloading Sysmon..." -ForegroundColor Green
+Invoke-RestMethod -Uri $SysmonURL -OutFile $SysmonPath
+
+Write-Host "Downloading Sysmon configuration..." -ForegroundColor Green
+Invoke-RestMethod -Uri $ConfigURL -OutFile $ConfigPath
+
+Write-Host "Installing Sysmon Service..." -ForegroundColor Yellow
+Start-Process -FilePath $SysmonPath -ArgumentList "-accepteula -i $ConfigPath" -Wait
+
+Write-Host "--- SYSMON INSTALLATION COMPLETE ---" -ForegroundColor Cyan
