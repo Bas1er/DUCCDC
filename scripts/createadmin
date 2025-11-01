@@ -3,7 +3,7 @@
 
 # Define your new admin username and a temporary strong password.
 $newAdminUser = "DUCCDCadmin"
-$tempPassword = "TempPassword" # Change this immediately after first login.
+$tempPassword = "T3mpP@ssword!" # Change this immediately after first login.
 
 # Create the new user account.
 New-ADUser -Name $newAdminUser -SamAccountName $newAdminUser -AccountPassword (ConvertTo-SecureString $tempPassword -AsPlainText -Force) -Enabled $true -PasswordNeverExpires $true
