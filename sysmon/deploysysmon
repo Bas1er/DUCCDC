@@ -2,8 +2,8 @@
 # This script downloads Sysmon and the SwiftOnSecurity config, then installs the service.
 
 # ---!! CONFIGURE THESE VARIABLES!! ---
-$SysmonURL = "https://raw.githubusercontent.com/YourUser/YourRepo/main/Sysmon64.exe"
-$ConfigURL = "https://raw.githubusercontent.com/YourUser/YourRepo/main/sysmonconfig-export.xml"
+$SysmonURL = "https://raw.githubusercontent.com/Bas1er/DUCCDC/refs/heads/main/sysmon/Sysmon64.exe"
+$ConfigURL = "https://raw.githubusercontent.com/Bas1er/DUCCDC/refs/heads/main/sysmon/sysmonconfig-export.xml"
 # ----------------------------------------
 
 $ToolDir = "C:\temp\tools"
