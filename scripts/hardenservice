@@ -1,0 +1,21 @@
+# --- SCRIPT: SERVICE HARDENING ---
+# This stops and disables common high-risk, non-scored services.
+
+$servicesToDisable = @(
+    "WinRM",        # Windows Remote Management
+    "RemoteRegistry", # Remote Registry
+    "Telnet"        # Telnet (unless explicitly scored)
+)
+
+Write-Host "Stopping and Disabling high-risk services..." -ForegroundColor Yellow
+foreach ($service in $servicesToDisable) {
+    try {
+        Stop-Service -Name $service -Force -ErrorAction Stop
+        Set-Service -Name $service -StartupType Disabled -ErrorAction Stop
+        Write-Host "  - $service: STOPPED and DISABLED." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "  - $service: Could not be modified. May not exist." -ForegroundColor Red
+    }
+}
+Write-Host "Service hardening complete." -ForegroundColor Green
