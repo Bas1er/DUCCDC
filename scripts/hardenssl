@@ -1,0 +1,23 @@
+# --- SCRIPT: Harden SSL/TLS Ciphers ---
+# This disables weak protocols (SSL, TLS 1.0, TLS 1.1) via the registry.
+# A reboot is required for these settings to take effect.
+
+Write-Host "Disabling weak SSL/TLS protocols..." -ForegroundColor Yellow
+
+# Disable SSL 2.0, 3.0, TLS 1.0, TLS 1.1
+$protocols = @(
+    "SSL 2.0\Server", "SSL 3.0\Server",
+    "TLS 1.0\Server", "TLS 1.1\Server"
+)
+$regPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\"
+
+foreach ($protocol in $protocols) {
+    $keyPath = $regPath + $protocol
+    if (!(Test-Path $keyPath)) {
+        New-Item -Path $keyPath -Force | Out-Null
+    }
+    New-ItemProperty -Path $keyPath -Name "Enabled" -Value 0 -PropertyType "DWord" -Force | Out-Null
+    New-ItemProperty -Path $keyPath -Name "DisabledByDefault" -Value 1 -PropertyType "DWord" -Force | Out-Null
+}
+
+Write-Host "Weak protocols disabled. A REBOOT is required." -ForegroundColor Green
